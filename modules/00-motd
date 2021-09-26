@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# get functions
+source "./framework.sh"
+
+set -euo pipefail
+
+hostname=${HOSTNAME:-$(hostname)}
+
+printf "$(cat /home/cyriina/Projects/MOTD/modules/05-logo) \n"
+
+printf "$(bash /home/cyriina/Projects/MOTD/modules/10-banner) \n"
+
+printf "$(bash /home/cyriina/Projects/MOTD/modules/20-system) \n"
+
+printf "$(bash /home/cyriina/Projects/MOTD/modules/30-disks) \n"
+
+printf "$(bash /home/cyriina/Projects/MOTD/modules/40-services) \n"

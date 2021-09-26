@@ -1,0 +1,67 @@
+#!/bin/bash
+
+# get functions
+source "./framework.sh"
+
+# set column width
+COLUMNS=4
+
+# colors
+NC="\e[0m"      # reset
+GRN="\e[1;32m"
+RD="\e[1;31m"
+YBG="\e[43m"
+BLCK="\e[1;30m"
+
+# define list of services to check
+services=("docker" "heroku" "ufw" "nginx" "aws" "postgresql" "ssh")
+# sort services
+IFS=$'\n' services=($(sort <<<"${services[*]}"))
+unset IFS
+
+# get status of all services
+service_status=()
+for service in "${services[@]}"; do
+    service_status+=($(systemctl is-active "$service"))     # only works in WSL with the systemd mod script
+done
+
+out=""
+for i in ${!services[@]}; do
+    # color green if service is active, else red
+    if [[ "${service_status[$i]}" == "active" ]]; then
+        out+="  ${services[$i]}:,${GRN}★${NC},"
+    else
+        out+="  ${services[$i]}:,${RD}★${NC},"
+    fi
+    # insert \n every $COLUMNS column
+    if [ $((($i+1) % $COLUMNS)) -eq 0 ]; then
+        out+="\n"
+    fi
+done
+out+="\n"
+
+printf "\n                       ╔*.·:·.★ ✦ ★.·:·.*╗
+                       ║${YBG}${BLCK}    services:    ${NC}║
+╔══════════════════════╝                 ╚══════════════════════╗
+║                                                               ║\n"
+printf "$out" | column -ts $',' | sed -e 's/^/  /'
+printf "║                                                               ║
+╚═══════════════════════*.·:·.★ ✦ ★.·:·.*═══════════════════════╝\n"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
