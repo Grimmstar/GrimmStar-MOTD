@@ -1,0 +1,1 @@
+![Preview](/assets/cy_motd.png "Preview")
